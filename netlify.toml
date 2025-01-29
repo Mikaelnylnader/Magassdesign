@@ -1,6 +1,6 @@
 [build]
   base = "/"
-  command = "yarn install && yarn build"
+  command = "corepack enable && corepack prepare yarn@1.22.19 --activate && yarn install --frozen-lockfile && yarn build"
   publish = "dist"
   functions = "functions"
 
@@ -8,6 +8,9 @@
   NODE_VERSION = "18"
   YARN_VERSION = "1.22.19"
   YARN_FLAGS = "--no-ignore-optional --frozen-lockfile"
+  USE_NPM_INSTALL = "false"
+  NPM_TOKEN = "false"
+  CI = "true"
 
 [[redirects]]
   from = "/*"
