@@ -1,17 +1,17 @@
 [build]
   base = "/"
-  command = "yarn config set registry https://registry.yarnpkg.com && rm -rf node_modules && yarn cache clean && yarn install && yarn build"
+  command = "yarn config set registry https://registry.yarnpkg.com && rm -rf node_modules && yarn cache clean && yarn install --production=false && yarn build"
   publish = "dist"
   functions = "functions"
 
 [build.environment]
   NODE_VERSION = "18"
   YARN_VERSION = "1.22.19"
-  YARN_FLAGS = "--no-ignore-optional"
+  YARN_FLAGS = "--no-ignore-optional --production=false"
   USE_NPM_INSTALL = "false"
   NPM_TOKEN = "false"
   CI = "true"
-  NODE_ENV = "production"
+  NODE_ENV = "development"
 
 [[redirects]]
   from = "/*"
