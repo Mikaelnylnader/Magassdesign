@@ -1,16 +1,28 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Default to null if environment variables are not set
+let supabase = null;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Missing Supabase environment variables - some features may be unavailable');
+try {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+  if (supabaseUrl && supabaseAnonKey) {
+    // Validate URL format
+    new URL(supabaseUrl);
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  } else {
+    console.warn('Missing Supabase environment variables - some features may be unavailable');
+  }
+} catch (error) {
+  console.warn('Invalid Supabase configuration - some features may be unavailable');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export { supabase };
 
 // Get current user session
 export async function getCurrentSession() {
+  if (!supabase) return null;
   try {
     const { data: { session }, error } = await supabase.auth.getSession();
     if (error) throw error;
@@ -23,6 +35,7 @@ export async function getCurrentSession() {
 
 // Sign out user
 export async function signOut() {
+  if (!supabase) throw new Error('Supabase client not initialized');
   try {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
@@ -34,6 +47,7 @@ export async function signOut() {
 
 // Upload image to Supabase storage
 export async function uploadImage(file, bucket, filename) {
+  if (!supabase) throw new Error('Supabase client not initialized');
   try {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -56,6 +70,7 @@ export async function uploadImage(file, bucket, filename) {
 
 // Delete image from Supabase storage
 export async function deleteImage(bucket, filename) {
+  if (!supabase) throw new Error('Supabase client not initialized');
   try {
     const { error } = await supabase.storage
       .from(bucket)
@@ -69,6 +84,7 @@ export async function deleteImage(bucket, filename) {
 
 // Get public URL for an image
 export async function getImageUrl(bucket, filename) {
+  if (!supabase) throw new Error('Supabase client not initialized');
   try {
     const { data } = supabase.storage
       .from(bucket)
