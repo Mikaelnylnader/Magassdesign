@@ -29,13 +29,13 @@ function Hero() {
         <div className="container mx-auto">
           <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
             <div>
-              <h1 className="text-5xl md:text-7xl font-bold text-primary mb-8">
+              <h1 className="text-5xl md:text-7xl font-bold text-white mb-8">
                 Magass Design
               </h1>
             </div>
             <div className="flex gap-4 flex-col">
               <h2 className="text-4xl md:text-6xl max-w-2xl tracking-tighter text-center font-regular">
-                <span className="text-primary">We create</span>
+                <span className="text-white">We create</span>
                 <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1">
                   &nbsp;
                   {titles.map((title, index) => (

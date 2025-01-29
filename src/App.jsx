@@ -53,7 +53,7 @@ function Layout({ children }) {
   const authButton = isAuthenticated ? (
     <button
       onClick={handleLogout}
-      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-accent transition-colors"
+      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white hover:text-accent transition-colors"
     >
       <LogInIcon className="w-4 h-4" />
       Sign Out
@@ -61,7 +61,7 @@ function Layout({ children }) {
   ) : (
     <button
       onClick={handleAuthClick}
-      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 hover:text-accent transition-colors"
+      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white hover:text-accent transition-colors"
     >
       <LogInIcon className="w-4 h-4" />
       Sign In

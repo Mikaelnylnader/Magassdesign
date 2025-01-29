@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import { LucideIcon } from "lucide-react"
-import { cn } from "../../lib/utils"
+import { cn } from "@/lib/utils"
 
 interface NavItem {
   name: string
@@ -14,10 +14,11 @@ interface NavItem {
 
 interface NavBarProps {
   items: NavItem[]
+  children?: React.ReactNode
   className?: string
 }
 
-export function NavBar({ items, className }: NavBarProps) {
+export function NavBar({ items, children, className }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -79,6 +80,7 @@ export function NavBar({ items, className }: NavBarProps) {
             </Link>
           )
         })}
+        <div className="absolute right-2">{children}</div>
       </div>
     </div>
   )
