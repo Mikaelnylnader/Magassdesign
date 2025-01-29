@@ -1,16 +1,17 @@
 [build]
   base = "/"
-  command = "corepack enable && corepack prepare yarn@1.22.19 --activate && yarn install --frozen-lockfile && yarn build"
+  command = "yarn config set registry https://registry.yarnpkg.com && rm -rf node_modules && yarn cache clean && yarn install && yarn build"
   publish = "dist"
   functions = "functions"
 
 [build.environment]
   NODE_VERSION = "18"
   YARN_VERSION = "1.22.19"
-  YARN_FLAGS = "--no-ignore-optional --frozen-lockfile"
+  YARN_FLAGS = "--no-ignore-optional"
   USE_NPM_INSTALL = "false"
   NPM_TOKEN = "false"
   CI = "true"
+  NODE_ENV = "production"
 
 [[redirects]]
   from = "/*"
