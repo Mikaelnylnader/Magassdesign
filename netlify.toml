@@ -1,12 +1,13 @@
 [build]
   base = "/"
-  command = "npm config set registry https://registry.npmjs.org/ && npm install --legacy-peer-deps && npm run build"
+  command = "yarn install && yarn build"
   publish = "dist"
   functions = "functions"
 
 [build.environment]
   NODE_VERSION = "18"
-  NPM_FLAGS = "--no-audit --no-fund"
+  YARN_VERSION = "1.22.19"
+  YARN_FLAGS = "--no-ignore-optional --frozen-lockfile"
 
 [[redirects]]
   from = "/*"
