@@ -22,6 +22,14 @@ export default defineConfig({
     commonjsOptions: {
       include: [/node_modules/],
     },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          animations: ['framer-motion'],
+        },
+      },
+    },
   },
   server: {
     port: 5176,
