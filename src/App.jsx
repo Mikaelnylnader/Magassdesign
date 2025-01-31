@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { HomeIcon, UserIcon, BriefcaseIcon, ShoppingBagIcon, LogInIcon, WrenchIcon } from 'lucide-react';
 import { CartProvider, useCart } from './context/CartContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
@@ -12,10 +13,15 @@ import About from './pages/About';
 import Services from './pages/Services';
 import ImageTest from './pages/ImageTest';
 import Account from './pages/Account';
+import HoodiesPage from './pages/HoodiesPage';
+import ProductPage from './pages/ProductPage';
 import Chatbot from './components/Chatbot';
 import AuthModal from './components/AuthModal';
-import { NavBar } from './components/ui/tubelight-navbar';
+import Navigation from './components/Navigation';
 import { ScrollToTop } from './components/ui/scroll-to-top';
+import { NavBar } from './components/ui/tubelight-navbar';
+import TShirtsPage from './pages/TShirtsPage';
+import HandbrakePage from './pages/HandbrakePage';
 
 const navItems = [
   { name: 'Home', url: '/', icon: HomeIcon },
@@ -28,13 +34,7 @@ const navItems = [
 function Layout({ children }) {
   const location = useLocation();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
+  const { user, signOut } = useAuth();
 
   const handleAuthClick = () => {
     setIsAuthModalOpen(true);
@@ -44,15 +44,9 @@ function Layout({ children }) {
     setIsAuthModalOpen(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    window.location.reload();
-  };
-
-  const authButton = isAuthenticated ? (
+  const authButton = user ? (
     <button
-      onClick={handleLogout}
+      onClick={signOut}
       className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white hover:text-accent transition-colors"
     >
       <LogInIcon className="w-4 h-4" />
@@ -73,36 +67,51 @@ function Layout({ children }) {
       <NavBar items={navItems} className="z-50">
         {authButton}
       </NavBar>
-      <AnimatePresence mode="wait">
-        {children}
-      </AnimatePresence>
       <ScrollToTop />
-      <Chatbot />
+      <AnimatePresence mode="wait">
+        <motion.main
+          key={location.pathname}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {children}
+        </motion.main>
+      </AnimatePresence>
       <AuthModal isOpen={isAuthModalOpen} onClose={handleAuthClose} />
-      <footer className="bg-primary text-secondary py-12">
+      <Chatbot />
+      <footer className="bg-black text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">Magass Design</h3>
-              <p className="text-gray-600">Excellence in automotive customization since 2008</p>
+              <h3 className="text-xl font-bold mb-4 text-white">Magass Design</h3>
+              <p className="text-white">Excellence in automotive customization since 2008</p>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
+              <h4 className="text-lg font-semibold mb-4 text-white">Follow Us</h4>
               <div className="space-y-2">
-                <a href="https://www.instagram.com/magassdesign?igsh=OWMzMTNjeWZ1a3Vn" target="_blank" rel="noopener noreferrer" className="block text-gray-600 hover:text-accent transition-colors">Instagram</a>
-                <a href="https://www.youtube.com/magassdesign" target="_blank" rel="noopener noreferrer" className="block text-gray-600 hover:text-accent transition-colors">YouTube</a>
-                <a href="https://www.facebook.com/share/17tVwbZA8C/" target="_blank" rel="noopener noreferrer" className="block text-gray-600 hover:text-accent transition-colors">Facebook</a>
+                <a 
+                  href="https://www.instagram.com/magassdesign" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="block text-white hover:text-accent transition-colors cursor-pointer"
+                >
+                  Instagram
+                </a>
+                <a href="https://www.youtube.com/magassdesign" target="_blank" rel="noopener noreferrer" className="block text-white hover:text-accent transition-colors">YouTube</a>
+                <a href="https://www.facebook.com/share/17tVwbZA8C/" target="_blank" rel="noopener noreferrer" className="block text-white hover:text-accent transition-colors">Facebook</a>
               </div>
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-4">Contact</h4>
-              <p className="text-gray-600">shop@magassdesign.com</p>
-              <p className="text-gray-600">+1 (555) 123-4567</p>
-              <p className="text-gray-600">Göteborg, Sweden</p>
+              <h4 className="text-lg font-semibold mb-4 text-white">Contact</h4>
+              <p className="text-white">shop@magassdesign.com</p>
+              <p className="text-white">+1 (555) 123-4567</p>
+              <p className="text-white">Göteborg, Sweden</p>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
-            <p>&copy; 2023 Magass Design. All rights reserved.</p>
+          <div className="mt-12 pt-8 border-t border-gray-800 text-center text-white">
+            <p>&copy; 2025 Magass Design. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -113,20 +122,26 @@ function Layout({ children }) {
 function App() {
   return (
     <Router>
-      <CartProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/work" element={<Work />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/image-test" element={<ImageTest />} />
-            <Route path="/account" element={<Account />} />
-          </Routes>
-        </Layout>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/shop/hoodies" element={<HoodiesPage />} />
+              <Route path="/shop/t-shirts" element={<TShirtsPage />} />
+              <Route path="/shop/t-shirts/:id" element={<ProductPage />} />
+              <Route path="/shop/handbrake" element={<HandbrakePage />} />
+              <Route path="/work" element={<Work />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/image-test" element={<ImageTest />} />
+              <Route path="/account" element={<Account />} />
+            </Routes>
+          </Layout>
+        </CartProvider>
+      </AuthProvider>
     </Router>
   );
 }

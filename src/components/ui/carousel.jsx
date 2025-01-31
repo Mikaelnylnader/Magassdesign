@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Import static images
 const images = [
   {
-    url: '/engine-lights.jpg.jpg',
-    title: 'Custom Engine Work',
-    description: 'Precision engineering meets artistic design'
+    url: '/G37.jpeg',
+    title: 'Infiniti G37 Custom Build',
+    description: 'Performance meets luxury'
   },
   {
-    url: '/infiniti-front.jpg.jpeg',
-    title: 'Custom Infiniti Q60',
-    description: 'Stunning aesthetics, unmatched performance'
+    url: '/G371.jpeg',
+    title: 'G37 Showcase',
+    description: 'Precision craftsmanship in every detail'
   },
   {
-    url: '/282-680x453.jpg',
-    title: 'Custom Body Modifications',
-    description: 'Transforming visions into reality'
+    url: '/g372.jpeg',
+    title: 'G37 Excellence',
+    description: 'Custom automotive perfection'
   }
 ];
 

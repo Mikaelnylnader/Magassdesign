@@ -5,12 +5,12 @@ const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const carImages = [
-  "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&h=800&q=80",
-  "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&h=800&q=80",
-  "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&h=800&q=80",
-  "https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=800&h=800&q=80",
-  "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&h=800&q=80",
-  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&h=800&q=80",
+  "/lack.jpeg",
+  "/blue amazon.jpeg",
+  "/lack2.jpeg",
+  "/infiniti-front.jpg.jpeg",
+  "/infiniti-side.jpg.jpg",
+  "/282-680x453.jpg"
 ];
 
 const duration = 0.15;

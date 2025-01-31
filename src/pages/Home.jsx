@@ -10,33 +10,26 @@ import { LogoCarousel } from '../components/ui/logo-carousel';
 import { GradientHeading } from '../components/ui/gradient-heading';
 import { GlareCard } from '../components/ui/glare-card';
 import { AnimatedTestimonials } from '../components/ui/animated-testimonials';
-import {
-  BMWIcon,
-  MercedesIcon,
-  AudiIcon,
-  PorscheIcon,
-  FerrariIcon,
-  LamborghiniIcon
-} from '../components/ui/car-logos';
+import { getInstagramFeed } from '../services/instagram';
 
 const projects = [
   { 
     id: 1, 
     title: 'Custom Engine Work', 
     category: 'Performance', 
-    image: '/engine-lights.jpg'
+    image: '/engine-lights.jpg.jpg'
   },
   { 
     id: 2, 
     title: 'Custom Infiniti Q60', 
     category: 'Body Modification', 
-    image: '/infiniti-front.jpg'
+    image: '/infiniti-front.jpg.jpeg'
   },
   { 
     id: 3, 
     title: 'Custom Body Modifications', 
     category: 'Body Kit', 
-    image: '/infiniti-side.jpg'
+    image: '/infiniti-side.jpg.jpg'
   }
 ];
 
@@ -46,58 +39,73 @@ const youtubeVideos = [
     thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
     title: 'Custom BMW M4 Build - Full Process',
     views: '524K views',
-    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    url: 'https://www.youtube.com/watch?v=VIDEO_ID_1'
   },
   {
     id: 2,
     thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
     title: 'Carbon Fiber Hood Installation Guide',
     views: '328K views',
-    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    url: 'https://www.youtube.com/watch?v=VIDEO_ID_2'
   },
   {
     id: 3,
     thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
     title: 'Professional Paint Protection Guide',
     views: '412K views',
-    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    url: 'https://www.youtube.com/watch?v=VIDEO_ID_3'
   }
 ];
 
-const instagramPosts = [
-  {
+const allLogos = [
+  { 
+    name: "DB Akuten", 
     id: 1,
-    image: 'https://images.unsplash.com/photo-1626668893632-6f3a4466d22f?auto=format&fit=crop&w=800&q=80',
-    likes: '2.5K',
-    comments: '128'
+    url: "https://dbakuten.se/",
+    img: ({ className }) => (
+      <img 
+        src="/DB akuten.png" 
+        alt="DB Akuten" 
+        className={className}
+      />
+    )
   },
-  {
+  { 
+    name: "DB Akuten Service", 
     id: 2,
-    image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80',
-    likes: '3.1K',
-    comments: '245'
+    url: "https://sonax.se/",
+    img: ({ className }) => (
+      <img 
+        src="/DB akuten (1).png" 
+        alt="DB Akuten Service" 
+        className={className}
+      />
+    )
   },
-  {
+  { 
+    name: "DB Akuten Workshop", 
     id: 3,
-    image: 'https://images.unsplash.com/photo-1595044426077-d36d9236d54c?auto=format&fit=crop&w=800&q=80',
-    likes: '1.8K',
-    comments: '96'
+    url: "https://thorsbilsadelmakeri.se/",
+    img: ({ className }) => (
+      <img 
+        src="/DB akuten (2).png" 
+        alt="DB Akuten Workshop" 
+        className={className}
+      />
+    )
   },
-  {
+  { 
+    name: "59 Performance", 
     id: 4,
-    image: 'https://images.unsplash.com/photo-1614200187524-dc4b892acf16?auto=format&fit=crop&w=800&q=80',
-    likes: '4.2K',
-    comments: '312'
+    url: "https://www.59northwheels.se/en/",
+    img: ({ className }) => (
+      <img 
+        src="/59 (2).png" 
+        alt="59 Performance" 
+        className={className}
+      />
+    )
   }
-];
-
-const carLogos = [
-  { name: "BMW", id: 1, img: BMWIcon },
-  { name: "Mercedes-Benz", id: 2, img: MercedesIcon },
-  { name: "Audi", id: 3, img: AudiIcon },
-  { name: "Porsche", id: 4, img: PorscheIcon },
-  { name: "Ferrari", id: 5, img: FerrariIcon },
-  { name: "Lamborghini", id: 6, img: LamborghiniIcon }
 ];
 
 const testimonials = [
@@ -126,6 +134,102 @@ function Home() {
     triggerOnce: true,
     threshold: 0.1
   });
+  const [youtubeVideos, setYoutubeVideos] = useState([]);
+  const [isLoadingVideos, setIsLoadingVideos] = useState(true);
+  const [instagramPosts, setInstagramPosts] = useState([]);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+
+  useEffect(() => {
+    const fetchYoutubeVideos = async () => {
+      try {
+        const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
+        const CHANNEL_ID = 'YOUR_CHANNEL_ID'; // Replace with your actual channel ID
+        
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=3`
+        );
+        
+        const data = await response.json();
+        
+        const videos = data.items.map(item => ({
+          id: item.id.videoId,
+          thumbnail: item.snippet.thumbnails.high.url,
+          title: item.snippet.title,
+          url: `https://www.youtube.com/watch?v=${item.id.videoId}`
+        }));
+        
+        setYoutubeVideos(videos);
+      } catch (error) {
+        console.error('Error fetching YouTube videos:', error);
+        // Fallback to static data if API fails
+        setYoutubeVideos([
+          {
+            id: 1,
+            thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+            title: 'Custom BMW M4 Build - Full Process',
+            url: 'https://youtube.com/@magassdesign?si=05YXUD1lm2PAAaKp'
+          },
+          {
+            id: 2,
+            thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+            title: 'Carbon Fiber Hood Installation Guide',
+            url: 'https://youtube.com/@magassdesign?si=05YXUD1lm2PAAaKp'
+          },
+          {
+            id: 3,
+            thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+            title: 'Professional Paint Protection Guide',
+            url: 'https://youtube.com/@magassdesign?si=05YXUD1lm2PAAaKp'
+          }
+        ]);
+      } finally {
+        setIsLoadingVideos(false);
+      }
+    };
+
+    fetchYoutubeVideos();
+  }, []);
+
+  useEffect(() => {
+    async function fetchInstagramPosts() {
+      try {
+        const posts = await getInstagramFeed(4);
+        if (posts) {
+          setInstagramPosts(posts);
+        } else {
+          // Fallback to static data if API fails
+          setInstagramPosts([
+            {
+              id: 1,
+              image: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=800&q=80',
+              url: 'https://www.instagram.com/magassdesign'
+            },
+            {
+              id: 2,
+              image: 'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=800&q=80',
+              url: 'https://www.instagram.com/magassdesign'
+            },
+            {
+              id: 3,
+              image: 'https://images.unsplash.com/photo-1535732820275-9ffd998cac22?auto=format&fit=crop&w=800&q=80',
+              url: 'https://www.instagram.com/magassdesign'
+            },
+            {
+              id: 4,
+              image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+              url: 'https://www.instagram.com/magassdesign'
+            }
+          ]);
+        }
+      } catch (error) {
+        console.error('Error loading Instagram posts:', error);
+      } finally {
+        setIsLoadingPosts(false);
+      }
+    }
+
+    fetchInstagramPosts();
+  }, []);
 
   return (
     <div className="relative">
@@ -139,80 +243,80 @@ function Home() {
       />
       <Hero />
 
-      {/* Featured Products Section */}
+      {/* Shop Section */}
       <section className="bg-secondary py-16">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <GradientHeading size="lg" variant="secondary" className="mb-4">
-              Shop Our Collection
-            </GradientHeading>
-            <GradientHeading size="xl">
+            <h2 className="text-4xl font-bold text-white mb-8">
               Featured Products
-            </GradientHeading>
+            </h2>
           </motion.div>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                id: 1,
-                name: 'Classic Logo Hoodie',
-                price: 59.99,
-                image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&h=800&q=80',
-                category: 'Hoodies'
-              },
-              {
-                id: 2,
-                name: 'Vintage Car T-Shirt',
-                price: 29.99,
-                image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&h=800&q=80',
-                category: 'T-Shirts'
-              },
-              {
-                id: 3,
-                name: 'Performance Racing Hoodie',
-                price: 69.99,
-                image: 'https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&w=800&h=800&q=80',
-                category: 'Hoodies'
-              }
-            ].map((product) => (
-              <Link
-                key={product.id}
-                to="/shop"
-                className="group hover-project"
-              >
-                <motion.div
-                  className="bg-black border border-gray-800 rounded-lg overflow-hidden"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="aspect-square relative">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover opacity-90"
-                    />
-                    <div className="absolute inset-0 bg-black/20"></div>
-                  </div>
-                  <div className="p-6 bg-black/90">
-                    <p className="text-sm text-accent mb-2">{product.category}</p>
-                    <h3 className="text-xl font-bold text-primary mb-2">{product.name}</h3>
-                    <div className="flex justify-between items-center">
-                      <p className="text-lg text-primary">${product.price}</p>
-                      <span className="text-accent group-hover:translate-x-1 transition-transform">
-                        <ArrowUpRightIcon className="w-5 h-5" />
-                      </span>
+            <Link to="/shop/hoodies">
+              <GlareCard className="relative h-80 group overflow-hidden">
+                <img
+                  src="/1000020198.jpg"
+                  alt="Hoodies"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-xl font-bold text-white mb-2">Hoodies</h3>
+                    <p className="text-gray-200 mb-4">Premium quality street wear</p>
+                    <div className="flex items-center text-white">
+                      <span>Shop Now</span>
+                      <ArrowUpRightIcon className="w-5 h-5 ml-2" />
                     </div>
                   </div>
-                </motion.div>
-              </Link>
-            ))}
-          </div>
+                </div>
+              </GlareCard>
+            </Link>
 
+            <Link to="/shop/t-shirts">
+              <GlareCard className="relative h-80 group overflow-hidden">
+                <img
+                  src="/Untitled design (11).png"
+                  alt="T-shirts"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-xl font-bold text-white mb-2">T-shirts</h3>
+                    <p className="text-gray-200 mb-4">Stylish and comfortable designs</p>
+                    <div className="flex items-center text-white">
+                      <span>Shop Now</span>
+                      <ArrowUpRightIcon className="w-5 h-5 ml-2" />
+                    </div>
+                  </div>
+                </div>
+              </GlareCard>
+            </Link>
+
+            <Link to="/shop/accessories">
+              <GlareCard className="relative h-80 group overflow-hidden">
+                <img
+                  src="/accessories.jpg"
+                  alt="Accessories"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="text-xl font-bold text-white mb-2">Accessories</h3>
+                    <p className="text-gray-200 mb-4">Complete your vehicle's style</p>
+                    <div className="flex items-center text-white">
+                      <span>Shop Now</span>
+                      <ArrowUpRightIcon className="w-5 h-5 ml-2" />
+                    </div>
+                  </div>
+                </div>
+              </GlareCard>
+            </Link>
+          </div>
           <div className="text-center mt-12">
             <Link to="/shop">
               <RainbowButton className="inline-flex items-center gap-2">
@@ -240,8 +344,8 @@ function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 text-primary">Featured Builds</h2>
-            <p className="text-xl text-gray-400">Discover our latest automotive transformations</p>
+            <h2 className="text-4xl font-bold mb-4 text-white">Featured Builds</h2>
+            <p className="text-xl text-white">Discover our latest automotive transformations</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 justify-items-center">
             {projects.map((project) => (
@@ -261,7 +365,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Logo Carousel Section */}
+      {/* Trusted By Section */}
       <section className="bg-secondary py-16">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
@@ -277,7 +381,7 @@ function Home() {
               Our trusted partners
             </GradientHeading>
           </motion.div>
-          <LogoCarousel columnCount={3} logos={carLogos} />
+          <LogoCarousel columnCount={3} logos={allLogos} />
         </div>
       </section>
 
@@ -290,55 +394,67 @@ function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6 text-primary">Watch Our Builds</h2>
-            <p className="text-xl text-gray-400 mb-8">
+            <h2 className="text-4xl font-bold mb-6 text-white">Watch Our Builds</h2>
+            <p className="text-xl text-white mb-8">
               Get an inside look at our custom builds and processes
             </p>
-            <a
-              href="https://www.youtube.com/magassdesign"
+            <motion.a
+              href="https://youtube.com/@magassdesign?si=05YXUD1lm2PAAaKp"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
               Subscribe to Our Channel
               <ArrowUpRightIcon className="w-5 h-5 ml-2" />
-            </a>
+            </motion.a>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {youtubeVideos.map((video) => (
-              <motion.a
-                key={video.id}
-                href={video.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group cursor-pointer"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="relative aspect-video rounded-lg overflow-hidden mb-3">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                    <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-8 h-8 text-white"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+            {isLoadingVideos ? (
+              // Loading skeleton
+              Array(3).fill(0).map((_, index) => (
+                <div key={index} className="animate-pulse">
+                  <div className="bg-gray-700 aspect-video rounded-lg mb-3"></div>
+                  <div className="h-4 bg-gray-700 rounded w-3/4 mb-2"></div>
+                  <div className="h-3 bg-gray-700 rounded w-1/4"></div>
+                </div>
+              ))
+            ) : (
+              youtubeVideos.map((video) => (
+                <motion.a
+                  key={video.id}
+                  href={video.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="relative aspect-video rounded-lg overflow-hidden mb-3">
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                      <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center">
+                        <svg
+                          className="w-8 h-8 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <h3 className="text-primary font-semibold mb-1 group-hover:text-accent transition-colors">
-                  {video.title}
-                </h3>
-                <p className="text-gray-400 text-sm">{video.views}</p>
-              </motion.a>
-            ))}
+                  <h3 className="text-white font-semibold mb-1 group-hover:text-accent transition-colors">
+                    {video.title}
+                  </h3>
+                </motion.a>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -352,54 +468,54 @@ function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-6 text-primary">Follow Our Journey</h2>
-            <p className="text-xl text-gray-400 mb-8">
+            <h2 className="text-4xl font-bold mb-6 text-white">Follow Our Journey</h2>
+            <p className="text-xl text-white mb-8">
               Stay updated with our latest builds and behind-the-scenes content
             </p>
-            <a
-              href="https://www.instagram.com/magassdesign?igsh=OWMzMTNjeWZ1a3Vn"
+            <motion.a
+              href="https://www.instagram.com/magassdesign"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
               Follow Us on Instagram
               <ArrowUpRightIcon className="w-5 h-5 ml-2" />
-            </a>
+            </motion.a>
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {instagramPosts.map((post) => (
-              <motion.div
-                key={post.id}
-                className="group cursor-pointer relative aspect-square"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => window.open('https://www.instagram.com/magassdesign?igsh=OWMzMTNjeWZ1a3Vn', '_blank')}
-              >
-                <img
-                  src={post.image}
-                  alt="Instagram post"
-                  className="w-full h-full object-cover rounded-lg"
-                />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <div className="flex items-center justify-center space-x-4">
-                      <div className="flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                        {post.likes}
-                      </div>
-                      <div className="flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z" />
-                        </svg>
-                        {post.comments}
-                      </div>
+            {isLoadingPosts ? (
+              // Loading skeleton
+              Array(4).fill(0).map((_, index) => (
+                <div key={index} className="animate-pulse">
+                  <div className="aspect-square bg-gray-700 rounded-lg"></div>
+                </div>
+              ))
+            ) : (
+              instagramPosts.map((post) => (
+                <motion.a
+                  key={post.id}
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group cursor-pointer relative aspect-square block"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <img
+                    src={post.image}
+                    alt={post.caption || "Instagram post"}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                    <div className="text-white text-center p-4">
+                      <p className="text-sm line-clamp-3">{post.caption}</p>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.a>
+              ))
+            )}
           </div>
         </div>
       </section>

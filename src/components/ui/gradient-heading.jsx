@@ -39,17 +39,15 @@ export function GradientHeading({
   ...props
 }) {
   return (
-    <h3 {...props} className={className}>
-      <span
-        className={cn(
-          "tracking-tight pb-3 bg-clip-text text-transparent",
-          headingVariants.variant[variant],
-          headingVariants.size[size],
-          headingVariants.weight[weight]
-        )}
-      >
-        {children}
-      </span>
+    <h3 {...props} className={cn(
+      "tracking-tight pb-3",
+      headingVariants.variant[variant],
+      headingVariants.size[size],
+      headingVariants.weight[weight],
+      "bg-clip-text text-transparent",
+      className
+    )}>
+      {children}
     </h3>
   );
 }

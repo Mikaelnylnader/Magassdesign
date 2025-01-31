@@ -71,6 +71,7 @@ function Services() {
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Hero Section */}
       <div className="relative w-full min-h-[60vh]">
         <ServicesCarousel />
         <div className="relative z-30">
@@ -88,7 +89,7 @@ function Services() {
       </div>
 
       {/* Main Content */}
-      <div className="py-16">
+      <div className="bg-secondary py-16">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -120,11 +121,11 @@ function Services() {
                     </GlareCard>
                   </div>
                   <div className="flex-1 w-full flex flex-col justify-center">
-                    <h3 className="text-2xl font-bold text-primary mb-4">{service.title}</h3>
-                    <p className="text-gray-400 mb-6">{service.description}</p>
+                    <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
+                    <p className="text-gray-300 mb-6">{service.description}</p>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-center text-gray-400">
+                        <li key={i} className="flex items-center text-gray-300">
                           <span className="text-accent mr-2">•</span>
                           {feature}
                         </li>
@@ -152,7 +153,7 @@ function Services() {
               <GradientHeading size="lg" variant="secondary" className="mb-6">
                 Ready to Transform Your Vehicle?
               </GradientHeading>
-              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
                 Contact us today to discuss your project and discover how we can help bring your vision to life.
               </p>
               <RainbowButton className="inline-flex items-center gap-2">
