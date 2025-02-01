@@ -3,38 +3,40 @@ import { motion } from 'framer-motion';
 import { GradientHeading } from '../components/ui/gradient-heading';
 import { ShoppingBagIcon } from 'lucide-react';
 import { Carousel } from '../components/ui/carousel';
+import { useNavigate } from 'react-router-dom';
 
 function HandbrakePage() {
   const [selectedOption, setSelectedOption] = useState(null);
+  const navigate = useNavigate();
   
   const handbrakes = [
     {
       id: 1,
       name: "Magass Pro Handbrake V1",
       price: 299.99,
-      image: "https://placehold.co/600x400/111111/FFFFFF/png?text=Pro+Handbrake+V1",
-      description: "Professional-grade hydraulic handbrake with precision engineering",
-      options: ["Standard", "Competition"],
+      image: "/ebrake-600x900.png",
+      description: "Professional-grade hydraulic handbrake for sim racing",
+      options: ["Base Model", "With Sensor", "Premium Bundle"],
       colors: ["Black", "Silver"],
       inStock: true
     },
     {
       id: 2,
-      name: "Drift Spec Handbrake",
-      price: 349.99,
-      image: "https://placehold.co/600x400/111111/FFFFFF/png?text=Drift+Handbrake",
-      description: "Specialized handbrake designed for drift applications with extended lever",
-      options: ["Street", "Pro"],
-      colors: ["Black", "Red"],
+      name: "Magass Elite Handbrake",
+      price: 399.99,
+      image: "/handbrake-elite.jpg",
+      description: "Advanced hydraulic system with precision sensors",
+      options: ["Standard", "Pro Bundle"],
+      colors: ["Black"],
       inStock: true
     },
     {
       id: 3,
-      name: "Limited Edition Carbon Handbrake",
+      name: "Magass Limited Edition",
       price: 499.99,
-      image: "https://placehold.co/600x400/111111/FFFFFF/png?text=Carbon+Handbrake",
-      description: "Premium carbon fiber handbrake with titanium hardware",
-      options: ["Premium"],
+      image: "/handbrake-limited.jpg",
+      description: "Limited edition carbon fiber handbrake with custom engraving",
+      options: ["Collector's Edition"],
       colors: ["Carbon"],
       inStock: false
     }
@@ -61,8 +63,8 @@ function HandbrakePage() {
                 Magass Handbrakes
               </GradientHeading>
               <p className="text-xl text-white max-w-3xl text-center">
-                Professional-grade hydraulic handbrakes engineered for precision control. 
-                Each handbrake is crafted with premium materials and rigorous quality testing.
+                Professional-grade hydraulic handbrakes for the ultimate sim racing experience. 
+                Each handbrake is precision-engineered for maximum performance and durability.
               </p>
             </div>
           </div>
@@ -76,41 +78,53 @@ function HandbrakePage() {
             {handbrakes.map((handbrake) => (
               <motion.div
                 key={handbrake.id}
-                className="bg-gray-900 rounded-xl overflow-hidden"
+                className="bg-black/40 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 hover:border-accent/50 transition-all duration-200"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ 
+                  y: -4,
+                  scale: 1.01,
+                  transition: { 
+                    duration: 0.15,
+                    ease: "easeOut"
+                  }
+                }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handbrake.id === 1 && navigate('/product/magass-pro-handbrake')}
+                style={{ cursor: handbrake.id === 1 ? 'pointer' : 'default' }}
               >
                 <div className="aspect-square relative overflow-hidden">
                   <img
                     src={handbrake.image}
                     alt={handbrake.name}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="w-full h-full object-contain"
                   />
                   {!handbrake.inStock && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
                       <span className="text-white font-bold text-lg">Out of Stock</span>
                     </div>
                   )}
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-white text-xl font-bold mb-2">{handbrake.name}</h3>
-                  <p className="text-gray-400 mb-4">{handbrake.description}</p>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-white text-2xl font-bold">${handbrake.price}</span>
-                    <div className="flex gap-2">
-                      {handbrake.colors.map((color) => (
-                        <div
-                          key={color}
-                          className="w-6 h-6 rounded-full border-2 border-gray-700"
-                          style={{ backgroundColor: color.toLowerCase() }}
-                          title={color}
-                        />
-                      ))}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col items-start justify-end p-6">
+                    <h3 className="text-white text-xl font-bold mb-2 transform transition-all duration-300 group-hover:translate-y-0">{handbrake.name}</h3>
+                    <p className="text-gray-200 mb-4">{handbrake.description}</p>
+                    <div className="flex justify-between items-center w-full">
+                      <span className="text-white text-2xl font-bold">${handbrake.price}</span>
+                      <div className="flex gap-2">
+                        {handbrake.colors.map((color) => (
+                          <div
+                            key={color}
+                            className="w-6 h-6 rounded-full border-2 border-white/20 hover:border-accent transition-colors duration-300"
+                            style={{ backgroundColor: color.toLowerCase() }}
+                            title={color}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
+                </div>
 
+                <div className="p-6 bg-black">
                   <div className="mb-4">
                     <div className="text-sm text-gray-400 mb-2">Select Option:</div>
                     <div className="flex flex-wrap gap-2">

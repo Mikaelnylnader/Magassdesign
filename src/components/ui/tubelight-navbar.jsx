@@ -28,10 +28,7 @@ export function NavBar({ items, className, children }) {
 
   const handleNavClick = (item) => {
     setActiveTab(item.name);
-    if (location.pathname === item.url && item.url === '/') {
-      // If clicking home link while on home page, scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -50,6 +47,7 @@ export function NavBar({ items, className, children }) {
             <Link
               key={item.name}
               to={item.url}
+              onClick={() => handleNavClick(item)}
               className={cn(
                 "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors",
                 "text-white/80 hover:text-white",

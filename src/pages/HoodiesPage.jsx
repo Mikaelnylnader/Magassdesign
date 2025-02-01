@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { GradientHeading } from '../components/ui/gradient-heading';
 import { ShoppingBagIcon } from 'lucide-react';
 import { Carousel } from '../components/ui/carousel';
+import { useNavigate } from 'react-router-dom';
 
 function HoodiesPage() {
   const [selectedSize, setSelectedSize] = useState(null);
+  const navigate = useNavigate();
   
   const hoodies = [
     {
@@ -15,7 +17,7 @@ function HoodiesPage() {
       image: "https://placehold.co/600x400/111111/FFFFFF/png?text=Magass+Hoodie",
       description: "Premium black hoodie with embroidered Magass Design logo",
       sizes: ["S", "M", "L", "XL", "XXL"],
-      colors: ["Black", "Gray"],
+      colors: ["Black", "Red", "Blue"],
       inStock: true
     },
     {
@@ -76,41 +78,53 @@ function HoodiesPage() {
             {hoodies.map((hoodie) => (
               <motion.div
                 key={hoodie.id}
-                className="bg-gray-900 rounded-xl overflow-hidden"
+                className="bg-black/40 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 hover:border-accent/50 transition-all duration-200"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{ 
+                  y: -4,
+                  scale: 1.01,
+                  transition: { 
+                    duration: 0.15,
+                    ease: "easeOut"
+                  }
+                }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => hoodie.id === 1 && navigate('/product/classic-magass-hoodie')}
+                style={{ cursor: hoodie.id === 1 ? 'pointer' : 'default' }}
               >
                 <div className="aspect-square relative overflow-hidden">
                   <img
-                    src={hoodie.image}
+                    src="/1000020198.jpg"
                     alt={hoodie.name}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="w-full h-full object-cover"
                   />
                   {!hoodie.inStock && (
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
                       <span className="text-white font-bold text-lg">Out of Stock</span>
                     </div>
                   )}
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-white text-xl font-bold mb-2">{hoodie.name}</h3>
-                  <p className="text-gray-400 mb-4">{hoodie.description}</p>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-white text-2xl font-bold">${hoodie.price}</span>
-                    <div className="flex gap-2">
-                      {hoodie.colors.map((color) => (
-                        <div
-                          key={color}
-                          className="w-6 h-6 rounded-full border-2 border-gray-700"
-                          style={{ backgroundColor: color.toLowerCase() }}
-                          title={color}
-                        />
-                      ))}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col items-start justify-end p-6">
+                    <h3 className="text-white text-xl font-bold mb-2 transform transition-all duration-300 group-hover:translate-y-0">{hoodie.name}</h3>
+                    <p className="text-gray-200 mb-4">{hoodie.description}</p>
+                    <div className="flex justify-between items-center w-full">
+                      <span className="text-white text-2xl font-bold">${hoodie.price}</span>
+                      <div className="flex gap-2">
+                        {hoodie.colors.map((color) => (
+                          <div
+                            key={color}
+                            className="w-6 h-6 rounded-full border-2 border-white/20 hover:border-accent transition-colors duration-300"
+                            style={{ backgroundColor: color.toLowerCase() }}
+                            title={color}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
+                </div>
 
+                <div className="p-6 bg-black">
                   <div className="mb-4">
                     <div className="text-sm text-gray-400 mb-2">Select Size:</div>
                     <div className="flex flex-wrap gap-2">

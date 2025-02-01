@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@paypal/react-paypal-js": "^8.8.1",
     "@radix-ui/react-slot": "^1.1.1",
     "@supabase/supabase-js": "^2.48.1",
     "@tabler/icons-react": "^2.47.0",

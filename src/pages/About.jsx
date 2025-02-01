@@ -1,11 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GradientHeading } from '../components/ui/gradient-heading';
 import { Carousel } from '../components/ui/carousel';
-import { AnimatedTestimonials } from '../components/ui/animated-testimonials';
 import { AnimatedTooltip } from "../components/ui/animated-tooltip";
+import { TeamMemberPopup } from '../components/ui/team-member-popup';
 
 const people = [
   {
@@ -55,27 +55,60 @@ const people = [
 const teamMembers = [
   {
     id: 1,
-    name: "Magnus Svensson",
-    designation: "Founder & Lead Designer",
-    image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=800&h=800&q=80",
+    name: "Christian Magass",
+    designation: "Founder & Paint Specialist",
+    image: "/crille .png",
+    bio: "With over 15 years of experience in automotive paint and customization, Christian founded Magass Design with a vision to revolutionize the custom car scene in Sweden. His expertise in paint techniques and color design has set new standards in automotive finishing.",
+    expertise: [
+      "Custom Paint Design",
+      "Color Theory & Application",
+      "Paint Protection Systems",
+      "Custom Finish Development"
+    ],
+    achievements: [
+      "Founded Magass Design in 2008",
+      "Developed signature paint techniques",
+      "Featured in Top Gear Magazine 2019",
+      "Winner of Stockholm Custom Auto Show 2022"
+    ]
   },
   {
     id: 2,
-    name: "Erik Anderson",
+    name: "Mattias Karlsson",
     designation: "Head of Paint Department",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&h=800&q=80",
+    bio: "Mattias brings his artistic vision and technical expertise to every paint job. His innovative color combinations and flawless application techniques have become a signature element of Magass Design's distinctive style.",
+    expertise: [
+      "Custom Paint Formulation",
+      "Airbrush Artistry",
+      "Color Theory",
+      "Clear Coat Applications"
+    ],
+    achievements: [
+      "Developed signature pearl color series",
+      "Trained 12 apprentice painters",
+      "Best Paint Award - Nordic Car Show 2021",
+      "Featured in Auto Color Magazine"
+    ]
   },
   {
     id: 3,
-    name: "Maria Nilsson",
+    name: "Sofia Bergstedt",
     designation: "Carbon Fiber Specialist",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&h=800&q=80",
-  },
-  {
-    id: 4,
-    name: "Johan Lindström",
-    designation: "Master Fabricator",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&h=800&q=80",
+    bio: "Sofia leads our carbon fiber division, pushing the boundaries of lightweight performance parts. Her expertise in composite materials has revolutionized our approach to custom component manufacturing.",
+    expertise: [
+      "Carbon Fiber Manufacturing",
+      "Composite Materials",
+      "3D Modeling",
+      "Structural Analysis"
+    ],
+    achievements: [
+      "Patented carbon fiber manufacturing process",
+      "Reduced component weight by 40%",
+      "Innovation Award - Automotive Tech Expo",
+      "Published research on composite materials"
+    ]
   }
 ];
 
@@ -88,6 +121,8 @@ function AnimatedTooltipPreview() {
 }
 
 function About() {
+  const [selectedMember, setSelectedMember] = useState(null);
+
   return (
     <>
       {/* Hero Section with Background Carousel */}
@@ -97,7 +132,7 @@ function About() {
           <div className="container mx-auto px-6">
             <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
               <GradientHeading size="xl" variant="light" className="text-center">
-                About Magass Design
+                About
               </GradientHeading>
               <p className="text-xl text-white max-w-3xl text-center">
                 Since 2008, we've been crafting automotive excellence in the heart of Göteborg, 
@@ -126,7 +161,7 @@ function About() {
                     <p className="text-gray-400">
                       Magass Design was born from a passion for automotive excellence and a vision 
                       to transform ordinary vehicles into extraordinary masterpieces. Founded by 
-                      Magnus Svensson in a small garage in Göteborg, we started with a simple 
+                      Christian Magass in a small garage in Göteborg, we started with a simple 
                       mission: to bring innovative design and Swedish craftsmanship to the automotive 
                       customization industry.
                     </p>
@@ -193,79 +228,85 @@ function About() {
             <section className="mb-20">
               <h2 className="text-3xl font-bold mb-12 text-primary text-center">Our Core Values</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-gray-900 p-8 rounded-lg">
-                  <h3 className="text-xl font-bold mb-4 text-primary">Excellence</h3>
-                  <p className="text-gray-400">
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="bg-black p-8 rounded-lg border border-gray-800 hover:border-accent group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <h3 className="text-xl font-bold mb-4 text-primary relative z-10 group-hover:text-accent transition-colors duration-300">Excellence</h3>
+                  <p className="text-gray-400 relative z-10 group-hover:text-gray-300 transition-colors duration-300">
                     We pursue perfection in every detail, from the initial design to the final polish. 
                     Our commitment to excellence drives us to exceed expectations and deliver 
                     exceptional results in every project.
                   </p>
-                </div>
-                <div className="bg-gray-900 p-8 rounded-lg">
-                  <h3 className="text-xl font-bold mb-4 text-primary">Innovation</h3>
-                  <p className="text-gray-400">
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="bg-black p-8 rounded-lg border border-gray-800 hover:border-accent group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <h3 className="text-xl font-bold mb-4 text-primary relative z-10 group-hover:text-accent transition-colors duration-300">Innovation</h3>
+                  <p className="text-gray-400 relative z-10 group-hover:text-gray-300 transition-colors duration-300">
                     We constantly push boundaries and explore new techniques, combining traditional 
                     craftsmanship with cutting-edge technology to create unique and groundbreaking 
                     automotive designs.
                   </p>
-                </div>
-                <div className="bg-gray-900 p-8 rounded-lg">
-                  <h3 className="text-xl font-bold mb-4 text-primary">Integrity</h3>
-                  <p className="text-gray-400">
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="bg-black p-8 rounded-lg border border-gray-800 hover:border-accent group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <h3 className="text-xl font-bold mb-4 text-primary relative z-10 group-hover:text-accent transition-colors duration-300">Integrity</h3>
+                  <p className="text-gray-400 relative z-10 group-hover:text-gray-300 transition-colors duration-300">
                     Trust is the foundation of our business. We maintain the highest standards of 
                     honesty and transparency in all our dealings, ensuring lasting relationships 
                     with our clients.
                   </p>
-                </div>
+                </motion.div>
               </div>
-            </section>
-
-            {/* Add AnimatedTooltipPreview before the Testimonials section */}
-            <section className="mb-20">
-              <h2 className="text-3xl font-bold mb-12 text-primary text-center">Our Team</h2>
-              <AnimatedTooltipPreview />
-            </section>
-
-            {/* Testimonials Section */}
-            <section className="mb-20">
-              <GradientHeading size="lg" variant="secondary" className="text-center mb-12">
-                What Our Team Says
-              </GradientHeading>
-              <AnimatedTestimonials
-                testimonials={[
-                  {
-                    quote: "Leading our paint division with over 15 years of experience in custom automotive finishes. Specializing in unique color formulations and flawless application techniques.",
-                    name: "Erik Anderson",
-                    designation: "Head of Paint Department",
-                    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&h=800&q=80"
-                  },
-                  {
-                    quote: "Pushing the boundaries of carbon fiber innovation. Our team develops custom components that combine lightweight performance with stunning aesthetics.",
-                    name: "Maria Nilsson",
-                    designation: "Carbon Fiber Specialist",
-                    src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&h=800&q=80"
-                  },
-                  {
-                    quote: "Crafting custom body modifications that transform vehicles into unique works of art. Every project is an opportunity to create something extraordinary.",
-                    name: "Johan Lindström",
-                    designation: "Master Fabricator",
-                    src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&h=800&q=80"
-                  }
-                ]}
-                autoplay={true}
-              />
             </section>
 
             {/* Team Section */}
             <section className="mb-20">
-              <GradientHeading size="lg" className="text-center mb-12">
+              <GradientHeading size="lg" variant="light" className="text-center mb-12">
                 Meet Our Team
               </GradientHeading>
               <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
                 Our team of passionate automotive experts brings together decades of experience
                 in custom design, fabrication, and innovation.
               </p>
-              <AnimatedTooltip items={teamMembers} />
+              <div className="flex flex-wrap items-center justify-center gap-12">
+                {teamMembers.map((member) => (
+                  <motion.div
+                    key={member.id}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    onClick={() => setSelectedMember(member)}
+                    className="relative cursor-pointer group"
+                  >
+                    <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-800 hover:border-accent transition-colors duration-300">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 bg-black/90 text-white p-4 rounded-lg shadow-xl min-w-[200px] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      <div className="font-bold mb-1">{member.name}</div>
+                      <div className="text-sm text-accent">{member.designation}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <TeamMemberPopup
+                isOpen={!!selectedMember}
+                onClose={() => setSelectedMember(null)}
+                member={selectedMember}
+              />
             </section>
           </motion.div>
         </div>

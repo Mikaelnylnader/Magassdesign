@@ -10,6 +10,7 @@ import { LogoCarousel } from '../components/ui/logo-carousel';
 import { GradientHeading } from '../components/ui/gradient-heading';
 import { GlareCard } from '../components/ui/glare-card';
 import { AnimatedTestimonials } from '../components/ui/animated-testimonials';
+import { TeamMemberPopup } from '../components/ui/team-member-popup';
 import { getInstagramFeed } from '../services/instagram';
 
 const projects = [
@@ -129,6 +130,66 @@ const testimonials = [
   }
 ];
 
+const teamMembers = [
+  {
+    id: 1,
+    name: "Christian Magass",
+    designation: "Founder & Paint Specialist",
+    image: "/crille .png",
+    bio: "With over 15 years of experience in automotive paint and customization, Christian founded Magass Design with a vision to revolutionize the custom car scene in Sweden. His expertise in paint techniques and color design has set new standards in automotive finishing.",
+    expertise: [
+      "Custom Paint Design",
+      "Color Theory & Application",
+      "Paint Protection Systems",
+      "Custom Finish Development"
+    ],
+    achievements: [
+      "Founded Magass Design in 2008",
+      "Developed signature paint techniques",
+      "Featured in Top Gear Magazine 2019",
+      "Winner of Stockholm Custom Auto Show 2022"
+    ]
+  },
+  {
+    id: 2,
+    name: "Mattias Karlsson",
+    designation: "Head of Paint Department",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&h=800&q=80",
+    bio: "Mattias brings his artistic vision and technical expertise to every paint job. His innovative color combinations and flawless application techniques have become a signature element of Magass Design's distinctive style.",
+    expertise: [
+      "Custom Paint Formulation",
+      "Airbrush Artistry",
+      "Color Theory",
+      "Clear Coat Applications"
+    ],
+    achievements: [
+      "Developed signature pearl color series",
+      "Trained 12 apprentice painters",
+      "Best Paint Award - Nordic Car Show 2021",
+      "Featured in Auto Color Magazine"
+    ]
+  },
+  {
+    id: 3,
+    name: "Sofia Bergstedt",
+    designation: "Carbon Fiber Specialist",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&h=800&q=80",
+    bio: "Sofia leads our carbon fiber division, pushing the boundaries of lightweight performance parts. Her expertise in composite materials has revolutionized our approach to custom component manufacturing.",
+    expertise: [
+      "Carbon Fiber Manufacturing",
+      "Composite Materials",
+      "3D Modeling",
+      "Structural Analysis"
+    ],
+    achievements: [
+      "Patented carbon fiber manufacturing process",
+      "Reduced component weight by 40%",
+      "Innovation Award - Automotive Tech Expo",
+      "Published research on composite materials"
+    ]
+  }
+];
+
 function Home() {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -138,6 +199,7 @@ function Home() {
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [instagramPosts, setInstagramPosts] = useState([]);
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   useEffect(() => {
     const fetchYoutubeVideos = async () => {
@@ -233,14 +295,6 @@ function Home() {
 
   return (
     <div className="relative">
-      <motion.img
-        src="/Magass Design logo.png"
-        alt="Magass Design Logo"
-        className="fixed top-6 left-6 w-48 h-auto z-50"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      />
       <Hero />
 
       {/* Shop Section */}
@@ -255,64 +309,56 @@ function Home() {
             <h2 className="text-4xl font-bold text-white mb-8">
               Featured Products
             </h2>
+            <p className="text-xl text-white mb-8">Shop Collection</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link to="/shop/hoodies">
-              <GlareCard className="relative h-80 group overflow-hidden">
+            <Link 
+              to="/shop/hoodies" 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center">
                 <img
+                  className="h-full w-full absolute inset-0 object-cover"
                   src="/1000020198.jpg"
                   alt="Hoodies"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-xl font-bold text-white mb-2">Hoodies</h3>
-                    <p className="text-gray-200 mb-4">Premium quality street wear</p>
-                    <div className="flex items-center text-white">
-                      <span>Shop Now</span>
-                      <ArrowUpRightIcon className="w-5 h-5 ml-2" />
-                    </div>
-                  </div>
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">Hoodies</h3>
+                  <p className="text-gray-200">Premium quality street wear</p>
                 </div>
               </GlareCard>
             </Link>
 
-            <Link to="/shop/t-shirts">
-              <GlareCard className="relative h-80 group overflow-hidden">
+            <Link 
+              to="/shop/t-shirts"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center">
                 <img
+                  className="h-full w-full absolute inset-0 object-cover"
                   src="/Untitled design (11).png"
                   alt="T-shirts"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-xl font-bold text-white mb-2">T-shirts</h3>
-                    <p className="text-gray-200 mb-4">Stylish and comfortable designs</p>
-                    <div className="flex items-center text-white">
-                      <span>Shop Now</span>
-                      <ArrowUpRightIcon className="w-5 h-5 ml-2" />
-                    </div>
-                  </div>
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">T-shirts</h3>
+                  <p className="text-gray-200">Stylish and comfortable designs</p>
                 </div>
               </GlareCard>
             </Link>
 
-            <Link to="/shop/accessories">
-              <GlareCard className="relative h-80 group overflow-hidden">
+            <Link 
+              to="/shop/handbrake"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center h-64">
                 <img
-                  src="/accessories.jpg"
-                  alt="Accessories"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="h-full w-full absolute inset-0 object-contain"
+                  src="/ebrake-600x900.png"
+                  alt="Handbrake"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-xl font-bold text-white mb-2">Accessories</h3>
-                    <p className="text-gray-200 mb-4">Complete your vehicle's style</p>
-                    <div className="flex items-center text-white">
-                      <span>Shop Now</span>
-                      <ArrowUpRightIcon className="w-5 h-5 ml-2" />
-                    </div>
-                  </div>
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">Handbrake</h3>
+                  <p className="text-gray-200">Professional-grade hydraulic handbrakes</p>
                 </div>
               </GlareCard>
             </Link>
@@ -331,6 +377,16 @@ function Home() {
       {/* 3D Car Carousel Section */}
       <section className="bg-secondary py-16">
         <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-bold text-white mb-8">
+              Spinn to see the G35
+            </h2>
+          </motion.div>
           <ThreeDCarCarousel />
         </div>
       </section>
@@ -365,6 +421,47 @@ function Home() {
         </div>
       </section>
 
+      {/* Team Section */}
+      <section className="bg-black py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <GradientHeading size="lg" variant="light" className="text-center mb-12">
+            Meet Our Team
+          </GradientHeading>
+          <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16">
+            Our team of passionate automotive experts brings together decades of experience
+            in custom design, fabrication, and innovation.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-12">
+            {teamMembers.map((member) => (
+              <motion.div
+                key={member.id}
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                onClick={() => setSelectedMember(member)}
+                className="relative cursor-pointer group"
+              >
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-800 hover:border-accent transition-colors duration-300">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 bg-black/90 text-white p-4 rounded-lg shadow-xl min-w-[200px] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  <div className="font-bold mb-1">{member.name}</div>
+                  <div className="text-sm text-accent">{member.designation}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <TeamMemberPopup
+            isOpen={!!selectedMember}
+            onClose={() => setSelectedMember(null)}
+            member={selectedMember}
+          />
+        </div>
+      </section>
+
       {/* Trusted By Section */}
       <section className="bg-secondary py-16">
         <div className="max-w-7xl mx-auto px-6">
@@ -374,11 +471,11 @@ function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <GradientHeading variant="secondary" className="mb-4">
-              Trusted by Magass Design and many others
+            <GradientHeading variant="light" className="mb-4">
+              Trusted by Magass Design
             </GradientHeading>
-            <GradientHeading size="lg">
-              Our trusted partners
+            <GradientHeading size="lg" variant="light">
+              Our partners
             </GradientHeading>
           </motion.div>
           <LogoCarousel columnCount={3} logos={allLogos} />

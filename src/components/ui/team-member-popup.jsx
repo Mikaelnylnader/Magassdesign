@@ -1,95 +1,142 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import { RainbowButton } from './rainbow-button';
+import { X } from 'lucide-react';
 
-export function TeamMemberPopup({ member, isOpen, onClose }) {
-  if (!member) return null;
-
+export function TeamMemberPopup({ isOpen, onClose, member }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
-          onClick={onClose}
-        >
+        <>
+          {/* Backdrop */}
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl bg-black rounded-2xl p-6 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center"
           >
-            <div className="absolute inset-0 opacity-10">
-              <div
-                className="absolute inset-0 animate-rainbow"
-                style={{
-                  backgroundImage: 'linear-gradient(90deg, hsl(var(--color-1)), hsl(var(--color-5)), hsl(var(--color-3)), hsl(var(--color-4)), hsl(var(--color-2)))',
-                  backgroundSize: '200%'
-                }}
-              />
-            </div>
-            
-            <div className="relative">
-              <button
-                onClick={onClose}
-                className="absolute right-0 top-0 p-2 text-gray-400 hover:text-white transition-colors"
-              >
-                <XMarkIcon className="w-6 h-6" />
-              </button>
-
-              <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex-shrink-0">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-32 h-32 rounded-xl object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-primary mb-2">{member.name}</h3>
-                  <p className="text-accent mb-4">{member.designation}</p>
-                  <div className="space-y-4 text-gray-400">
-                    <p>{member.bio}</p>
-                    {member.expertise && (
-                      <div>
-                        <h4 className="text-primary font-semibold mb-2">Expertise</h4>
-                        <ul className="list-disc list-inside">
-                          {member.expertise.map((skill, index) => (
-                            <li key={index}>{skill}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    {member.projects && (
-                      <div>
-                        <h4 className="text-primary font-semibold mb-2">Notable Projects</h4>
-                        <ul className="list-disc list-inside">
-                          {member.projects.map((project, index) => (
-                            <li key={index}>{project}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                  {member.email && (
-                    <div className="mt-6">
-                      <RainbowButton
-                        onClick={() => window.location.href = `mailto:${member.email}`}
-                        className="inline-flex items-center"
-                      >
-                        Contact {member.name.split(' ')[0]}
-                      </RainbowButton>
+            {/* Popup Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="relative w-[90%] max-w-4xl mx-auto p-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative bg-black rounded-3xl overflow-hidden">
+                <div className="relative grid grid-cols-1 md:grid-cols-2 gap-20">
+                  {/* Image Section */}
+                  <div>
+                    <div className="relative h-80 w-full">
+                      <motion.img
+                        initial={{ scale: 1.2, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.4 }}
+                        src={member?.image}
+                        alt={member?.name}
+                        className="h-full w-full rounded-3xl object-cover object-center"
+                      />
                     </div>
-                  )}
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="flex justify-between flex-col py-4 pr-8">
+                    {/* Close Button */}
+                    <button
+                      onClick={onClose}
+                      className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10"
+                    >
+                      <X size={24} />
+                    </button>
+
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <h3 className="text-2xl font-bold text-primary mb-2">{member?.name}</h3>
+                      <p className="text-accent mb-6">{member?.designation}</p>
+                      
+                      <motion.p className="text-lg text-gray-400 mt-8">
+                        {member?.bio.split(" ").map((word, index) => (
+                          <motion.span
+                            key={index}
+                            initial={{
+                              filter: "blur(10px)",
+                              opacity: 0,
+                              y: 5,
+                            }}
+                            animate={{
+                              filter: "blur(0px)",
+                              opacity: 1,
+                              y: 0,
+                            }}
+                            transition={{
+                              duration: 0.2,
+                              ease: "easeInOut",
+                              delay: 0.02 * index,
+                            }}
+                            className="inline-block"
+                          >
+                            {word}&nbsp;
+                          </motion.span>
+                        ))}
+                      </motion.p>
+
+                      {member?.expertise && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 }}
+                          className="mt-6"
+                        >
+                          <h4 className="text-primary font-semibold mb-2">Expertise</h4>
+                          <ul className="list-none space-y-1">
+                            {member.expertise.map((skill, index) => (
+                              <motion.li 
+                                key={index}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.6 + (index * 0.1) }}
+                                className="text-gray-400"
+                              >
+                                • {skill}
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      )}
+
+                      {member?.achievements && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.8 }}
+                          className="mt-6"
+                        >
+                          <h4 className="text-primary font-semibold mb-2">Key Achievements</h4>
+                          <ul className="list-none space-y-1">
+                            {member.achievements.map((achievement, index) => (
+                              <motion.li 
+                                key={index}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.9 + (index * 0.1) }}
+                                className="text-gray-400"
+                              >
+                                • {achievement}
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </>
       )}
     </AnimatePresence>
   );

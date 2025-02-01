@@ -22,6 +22,9 @@ import { ScrollToTop } from './components/ui/scroll-to-top';
 import { NavBar } from './components/ui/tubelight-navbar';
 import TShirtsPage from './pages/TShirtsPage';
 import HandbrakePage from './pages/HandbrakePage';
+import ProductDetail from './pages/ProductDetail';
+import TShirtDetail from './pages/TShirtDetail';
+import HandbrakeDetail from './pages/HandbrakeDetail';
 
 const navItems = [
   { name: 'Home', url: '/', icon: HomeIcon },
@@ -34,7 +37,21 @@ const navItems = [
 function Layout({ children }) {
   const location = useLocation();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [showLogo, setShowLogo] = useState(true);
   const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowLogo(currentScrollY <= 100 || currentScrollY < lastScrollY);
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleAuthClick = () => {
     setIsAuthModalOpen(true);
@@ -64,6 +81,17 @@ function Layout({ children }) {
 
   return (
     <div className="min-h-screen bg-secondary text-primary">
+      <motion.img
+        src="/Magass Design logo.png"
+        alt="Magass Design Logo"
+        className="fixed top-6 left-6 w-32 h-auto z-50"
+        initial={{ opacity: 0 }}
+        animate={{ 
+          opacity: showLogo ? 1 : 0,
+          y: showLogo ? 0 : -20
+        }}
+        transition={{ duration: 0.3 }}
+      />
       <NavBar items={navItems} className="z-50">
         {authButton}
       </NavBar>
@@ -138,6 +166,9 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/image-test" element={<ImageTest />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/product/classic-magass-hoodie" element={<ProductDetail />} />
+              <Route path="/product/classic-magass-tshirt" element={<TShirtDetail />} />
+              <Route path="/product/magass-pro-handbrake" element={<HandbrakeDetail />} />
             </Routes>
           </Layout>
         </CartProvider>

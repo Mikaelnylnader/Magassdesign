@@ -14,7 +14,7 @@ const images = [
     description: 'Precision craftsmanship in every detail'
   },
   {
-    url: '/g372.jpeg',
+    url: '/G3712.jpeg',
     title: 'G37 Excellence',
     description: 'Custom automotive perfection'
   }

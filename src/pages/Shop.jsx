@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { GradientHeading } from '../components/ui/gradient-heading';
 import { Carousel } from '../components/ui/carousel';
 import { ShoppingBagIcon, ShirtIcon, HardHatIcon, WrenchIcon, StickerIcon } from 'lucide-react';
+import { GlareCard } from '../components/ui/glare-card';
 
 function Shop() {
   const [hoveredCategory, setHoveredCategory] = useState(null);
@@ -74,60 +75,96 @@ function Shop() {
         <div className="max-w-7xl mx-auto px-6">
           {/* Product Categories */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {categories.map((category) => (
-              <motion.div
-                key={category.id}
-                initial={{ y: 0 }}
-                animate={{ y: 0 }}
-                whileHover={{ y: -8 }}
-                transition={{ duration: 0.2 }}
-                className="h-full"
-              >
-                {category.comingSoon ? (
-                  <div
-                    onMouseEnter={() => setHoveredCategory(category.id)}
-                    onMouseLeave={() => setHoveredCategory(null)}
-                    className={`relative bg-black border border-gray-800 rounded-lg p-8 transition-all cursor-not-allowed w-full h-full flex flex-col
-                      shadow-[0_0_15px_rgba(0,0,0,0.2)] backdrop-blur-sm
-                      ${hoveredCategory === category.id ? 'border-accent shadow-[0_8px_30px_rgba(0,0,0,0.4)]' : 'hover:border-gray-700'}`}
-                  >
-                    <div className="absolute top-4 right-4 bg-accent px-3 py-1 rounded-full text-xs font-semibold text-white">
-                      Coming Soon
-                    </div>
-                    <div className="flex items-center gap-3 mb-4">
-                      {React.createElement(category.icon, {
-                        className: `w-6 h-6 ${hoveredCategory === category.id ? 'text-accent' : 'text-gray-400'}`,
-                        strokeWidth: 2
-                      })}
-                      <h3 className="text-white text-2xl font-bold">{category.name}</h3>
-                    </div>
-                    <p className={`text-gray-400 transition-colors ${hoveredCategory === category.id ? 'text-gray-300' : ''}`}>
-                      {category.description}
-                    </p>
+            <Link 
+              to="/shop/hoodies"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center">
+                <img
+                  className="h-full w-full absolute inset-0 object-cover"
+                  src="/1000020198.jpg"
+                  alt="Hoodies"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">Hoodies</h3>
+                  <p className="text-gray-200">Premium quality street wear</p>
+                </div>
+              </GlareCard>
+            </Link>
+
+            <Link 
+              to="/shop/t-shirts"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center">
+                <img
+                  className="h-full w-full absolute inset-0 object-cover"
+                  src="/Untitled design (11).png"
+                  alt="T-shirts"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">T-shirts</h3>
+                  <p className="text-gray-200">Stylish and comfortable designs</p>
+                </div>
+              </GlareCard>
+            </Link>
+
+            <Link 
+              to="/shop/handbrake"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center h-64">
+                <img
+                  className="h-full w-full absolute inset-0 object-contain"
+                  src="/ebrake-600x900.png"
+                  alt="Handbrake"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">Handbrake</h3>
+                  <p className="text-gray-200">Professional-grade hydraulic handbrakes</p>
+                </div>
+              </GlareCard>
+            </Link>
+
+            <Link 
+              to="/shop/caps"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center">
+                <img
+                  className="h-full w-full absolute inset-0 object-cover"
+                  src="/caps.jpg"
+                  alt="Caps"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">Caps</h3>
+                  <p className="text-gray-200">Classic and snapback caps with automotive flair</p>
+                  <div className="absolute top-4 right-4 bg-accent px-3 py-1 rounded-full text-xs font-semibold text-white">
+                    Coming Soon
                   </div>
-                ) : (
-                  <Link
-                    to={category.path}
-                    onMouseEnter={() => setHoveredCategory(category.id)}
-                    onMouseLeave={() => setHoveredCategory(null)}
-                    className={`relative bg-black border border-gray-800 rounded-lg p-8 transition-all w-full h-full flex flex-col no-underline
-                      shadow-[0_0_15px_rgba(0,0,0,0.2)] backdrop-blur-sm
-                      ${hoveredCategory === category.id ? 'border-accent shadow-[0_8px_30px_rgba(0,0,0,0.4)]' : 'hover:border-gray-700'}`}
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      {React.createElement(category.icon, {
-                        className: `w-6 h-6 ${hoveredCategory === category.id ? 'text-accent' : 'text-gray-400'}`,
-                        strokeWidth: 2
-                      })}
-                      <h3 className="text-white text-2xl font-bold">{category.name}</h3>
-                    </div>
-                    <p className={`text-gray-400 transition-colors ${hoveredCategory === category.id ? 'text-gray-300' : ''}`}>
-                      {category.description}
-                    </p>
-                  </Link>
-                )}
-              </motion.div>
-            ))}
+                </div>
+              </GlareCard>
+            </Link>
+
+            <Link 
+              to="/shop/stickers"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <GlareCard className="flex flex-col items-center justify-center">
+                <img
+                  className="h-full w-full absolute inset-0 object-cover"
+                  src="/stickers.jpg"
+                  alt="Stickers"
+                />
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
+                  <h3 className="text-xl font-bold text-white mb-2">Stickers</h3>
+                  <p className="text-gray-200">High-quality vinyl stickers to show your passion</p>
+                  <div className="absolute top-4 right-4 bg-accent px-3 py-1 rounded-full text-xs font-semibold text-white">
+                    Coming Soon
+                  </div>
+                </div>
+              </GlareCard>
+            </Link>
           </div>
         </div>
       </div>
