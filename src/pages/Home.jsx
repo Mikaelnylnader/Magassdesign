@@ -9,7 +9,6 @@ import { ThreeDCarCarousel } from '../components/ui/3d-carousel';
 import { LogoCarousel } from '../components/ui/logo-carousel';
 import { GradientHeading } from '../components/ui/gradient-heading';
 import { GlareCard } from '../components/ui/glare-card';
-import { AnimatedTestimonials } from '../components/ui/animated-testimonials';
 import { TeamMemberPopup } from '../components/ui/team-member-popup';
 import { getInstagramFeed } from '../services/instagram';
 
@@ -109,27 +108,6 @@ const allLogos = [
   }
 ];
 
-const testimonials = [
-  {
-    name: "Alex Thompson",
-    designation: "BMW M4 Owner",
-    quote: "Magass Design transformed my M4 into a masterpiece. Their attention to detail and craftsmanship is unmatched. The custom paint job and carbon fiber work exceeded all my expectations.",
-    src: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=800&h=800&q=80"
-  },
-  {
-    name: "Sarah Chen",
-    designation: "Porsche 911 Owner",
-    quote: "Working with Magass Design was an incredible experience. They understood my vision perfectly and delivered a stunning result. The quality of their work is truly world-class.",
-    src: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&h=800&q=80"
-  },
-  {
-    name: "Marcus Berg",
-    designation: "Mercedes AMG GT Owner",
-    quote: "The level of expertise and professionalism at Magass Design is outstanding. They've created something truly unique with my AMG GT, and the results speak for themselves.",
-    src: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&h=800&q=80"
-  }
-];
-
 const teamMembers = [
   {
     id: 1,
@@ -154,7 +132,7 @@ const teamMembers = [
     id: 2,
     name: "Mattias Karlsson",
     designation: "Head of Paint Department",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&h=800&q=80",
+    image: "/Mattis%20profil.png",
     bio: "Mattias brings his artistic vision and technical expertise to every paint job. His innovative color combinations and flawless application techniques have become a signature element of Magass Design's distinctive style.",
     expertise: [
       "Custom Paint Formulation",
@@ -350,10 +328,10 @@ function Home() {
               to="/shop/handbrake"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              <GlareCard className="flex flex-col items-center justify-center h-64">
+              <GlareCard className="flex flex-col items-center justify-center">
                 <img
-                  className="h-full w-full absolute inset-0 object-contain"
-                  src="/ebrake-600x900.png"
+                  className="h-full w-full absolute inset-0 object-cover"
+                  src="/handbrake.png"
                   alt="Handbrake"
                 />
                 <div className="absolute inset-0 bg-black/50 flex flex-col items-start justify-end p-6">
@@ -614,26 +592,6 @@ function Home() {
               ))
             )}
           </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="bg-secondary section-padding">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <GradientHeading size="lg" variant="secondary" className="mb-4">
-              What Our Clients Say
-            </GradientHeading>
-            <GradientHeading size="xl">
-              Client Testimonials
-            </GradientHeading>
-          </motion.div>
-          <AnimatedTestimonials testimonials={testimonials} autoplay={true} />
         </div>
       </section>
     </div>

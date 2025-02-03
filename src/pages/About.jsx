@@ -75,20 +75,20 @@ const teamMembers = [
   {
     id: 2,
     name: "Mattias Karlsson",
-    designation: "Head of Paint Department",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&h=800&q=80",
-    bio: "Mattias brings his artistic vision and technical expertise to every paint job. His innovative color combinations and flawless application techniques have become a signature element of Magass Design's distinctive style.",
+    designation: "Custom fabrication, 3D scan and CAD-designer",
+    image: "/Mattis%20profil.png",
+    bio: "Mattias is our expert in digital design and custom fabrication, bringing cutting-edge technology to automotive customization. His mastery of 3D scanning and CAD design enables us to create precise, innovative solutions for complex automotive projects.",
     expertise: [
-      "Custom Paint Formulation",
-      "Airbrush Artistry",
-      "Color Theory",
-      "Clear Coat Applications"
+      "3D Scanning & Modeling",
+      "Custom Part Fabrication",
+      "CAD Design & Engineering",
+      "Digital Prototyping"
     ],
     achievements: [
-      "Developed signature pearl color series",
-      "Trained 12 apprentice painters",
-      "Best Paint Award - Nordic Car Show 2021",
-      "Featured in Auto Color Magazine"
+      "Pioneered 3D scanning workflow for custom parts",
+      "Developed numerous custom fabrication solutions",
+      "Led multiple high-profile vehicle modification projects",
+      "Implemented advanced CAD design processes"
     ]
   },
   {

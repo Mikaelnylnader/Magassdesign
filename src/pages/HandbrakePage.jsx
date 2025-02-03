@@ -14,7 +14,7 @@ function HandbrakePage() {
       id: 1,
       name: "Magass Pro Handbrake V1",
       price: 299.99,
-      image: "/ebrake-600x900.png",
+      image: "/handbrake.png",
       description: "Professional-grade hydraulic handbrake for sim racing",
       options: ["Base Model", "With Sensor", "Premium Bundle"],
       colors: ["Black", "Silver"],
